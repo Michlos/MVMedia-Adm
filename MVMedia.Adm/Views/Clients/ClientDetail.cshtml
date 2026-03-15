@@ -1,0 +1,81 @@
+﻿@model MVMedia.Adm.DTOs.ClientWithMediaFileDTO
+
+<div>
+    <h4>Clients</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Client.Id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Client.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Client.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Client.Name)
+        </dd>
+        @*SE PESSOA JURÍDICA EXIBE CNPJ SENÃO EXIBE CPF*@  
+        @if (Model.Client.CNPJ != null && Model.Client.CNPJ != string.Empty)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Client.CNPJ)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Client.CNPJ)
+            </dd>
+        }
+        else
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Client.CPF)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Client.CPF)
+            </dd>
+        }
+    </dl>
+</div>
+<div class="mb-3">
+    <h3>Client Media</h3>
+    <a asp-controller="MediaFile" asp-action="AddMediaFileClient" asp-route-clientId="@Model.Client.Id" class="btn btn-primary">Create New Media</a>
+    <hr />
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Media URL</th>
+                <th>Active</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.MediaFiles != null)
+            {
+                foreach (var media in Model.MediaFiles)
+                {
+                    <tr>
+                        @* <td>@media.Id</td> *@
+                        <td><a href="@media.FileName" target="_blank">@media.FileName</a></td>
+                        <td>
+                            <input type="checkbox" @(media.IsActive? "checked" : "") disabled />
+                        </td>
+                        <td>
+                            @* <a asp-controller="MediaFile" asp-action="UpdateMediaFileClient" asp-route-id="@media.Id" class="btn btn-secondary">Edit</a> *@
+                            <a asp-controller="MediaFile" asp-action="DeleteMediaFile" asp-route-id="@media.Id" class="btn btn-danger">Delete</a>
+                            @*                             <form method="post" asp-asp-controller="Medias" asp-action="DeleteMedia" asp-route-id="@media.Id" class="d-inline">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form> *@
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+
+    @Html.ActionLink("Edit", "UpdateClient", "Clients", new { id = Model.Client.Id })
+    <a asp-action="Index">Back to List</a>
+</div>

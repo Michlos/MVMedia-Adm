@@ -1,0 +1,80 @@
+﻿@model IEnumerable<MVMedia.Adm.Models.ClientViewModel>
+@using MVMedia.Adm.Models
+
+
+<h2>Clients</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="fa-pull-left">
+            <a asp-action="AddClient" class="btn btn-primary">
+                <span>+New Client</span>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-6 text-end">
+        <a asp-controller="MediaList" asp-action="AddMediaList" class="btn btn-info">
+            <span>Update List Media</span>
+        </a>
+    </div>
+</div>
+<br />
+<div class="panel panel-default">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Id)</th>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.IsActive)</th>
+                    <th>Edit</th>
+                    <th>Add Media</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>
+                            @* <a href="@Url.Action("ClientDetail", "Clients", new { item.Id })">@Html.DisplayFor(modelItem => item.Name)</a> *@
+                            <a asp-action="ClientDetail" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.IsActive)</td>
+                        <td>
+                            <a asp-action="UpdateClient" asp-route-id="@item.Id" title="Edit" class="btn btn-warning">
+                                <span class="fas fa-edit"></span>
+                            </a>
+                        </td>
+                        <td>
+                            <a asp-controller="MediaFile" asp-action="AddMediaFileClient" asp-route-clientId="@item.Id" title="Add Media" class="btn btn-success">
+                                <span class="fas fa-play"></span>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            Nenhum cliente encontrado para esta empresa
+        </div>
+    }
+</div>
+
+@{
+    ViewData["Title"] = "Media List";
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        window.onload = function() {
+            alert('@TempData["SuccessMessage"]');
+        }
+    </script>
+}
