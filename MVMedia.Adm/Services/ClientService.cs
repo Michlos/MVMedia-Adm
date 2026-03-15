@@ -1,4 +1,5 @@
-﻿using MVMedia.Adm.Models;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using MVMedia.Adm.Models;
 using MVMedia.Adm.Services.Interfaces;
 using System.Text;
 using System.Text.Json;
@@ -10,8 +11,8 @@ public class ClientService : IClientService
     private readonly IHttpClientFactory _clientFactory;
     private const string apiEndpoint = "/api/Client/";
     private readonly JsonSerializerOptions _options;
-    private ClientViewModel clientVM;
-    private IEnumerable<ClientViewModel> clientListVM;
+    //private ClientViewModel clientVM;
+    //private IEnumerable<ClientViewModel> clientListVM;
 
     public ClientService(IHttpClientFactory clientFactory)
     {
@@ -23,16 +24,18 @@ public class ClientService : IClientService
     {
         var client = _clientFactory.CreateClient("MVMediaAPI");
         var response = await client.GetAsync(apiEndpoint + "GetAllClients");
+
         //response.EnsureSuccessStatusCode();
         if (response.IsSuccessStatusCode)
         {
             var apiResponse = await response.Content.ReadAsStringAsync();
-            clientListVM = JsonSerializer.Deserialize<IEnumerable<ClientViewModel>>(apiResponse, _options);
+            var clientListVM = JsonSerializer.Deserialize<IEnumerable<ClientViewModel>>(apiResponse, _options);
+            return clientListVM;
+
         }
         else
             return null;
 
-        return clientListVM;
     }
     public async Task<ClientViewModel> GetClientById(int id)
     {
@@ -42,15 +45,15 @@ public class ClientService : IClientService
             if (response.IsSuccessStatusCode)
             {
                 var apiResponse = await response.Content.ReadAsStringAsync();
-                clientVM = JsonSerializer
+                var clientVM = JsonSerializer
                            .Deserialize<ClientViewModel>(apiResponse, _options);
+                return clientVM;
             }
             else
             {
                 return null;
             }
         }
-        return clientVM;
     }
     public async Task<ClientViewModel> AddClient(ClientViewModel clientVM)
     {

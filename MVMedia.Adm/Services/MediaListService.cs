@@ -25,7 +25,7 @@ public class MediaListService : IMediaListService
         var formData = new List<KeyValuePair<string, string>>
         {
             new("Name", mediaList.Name),
-            new("CreateDate", mediaList.CreateDate.ToString("o")),
+            new("CreateDate", mediaList.CreateDate.ToString() ?? string.Empty),
             new("IsActive", mediaList.IsActive.ToString())
         };
         var content = new FormUrlEncodedContent(formData);
