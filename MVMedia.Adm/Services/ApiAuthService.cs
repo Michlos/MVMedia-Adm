@@ -34,5 +34,5 @@ public class ApiAuthService
 public class UserToken
 {
     public string? Token { get; set; }
-    public bool IsAdmin { get; set; }
+    //public bool IsAdmin { get; set; }
 }
