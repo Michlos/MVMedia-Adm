@@ -63,7 +63,11 @@ public class ClientsController : Controller
         {
             var result = await _clientService.UpdateClient(clientVM);
             if (result is not null)
-                return RedirectToAction(nameof(Index));
+            {
+                TempData["SuccessMessage"] = "Dados alterados com sucesso";
+                return RedirectToAction("Index");
+            }
+            //return RedirectToAction(nameof(Index));
             else
                 return View("Error", new string[] { "Something went wrong while processing your request" });
         }
