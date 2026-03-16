@@ -21,11 +21,20 @@ public class ApiAuthService
         if (!response.IsSuccessStatusCode)
             return null;
 
-        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-        var result = await response.Content.ReadFromJsonAsync<UserToken>(options);
+        try
+        {
 
-        //var result = await response.Content.ReadFromJsonAsync<UserToken>();
-        return result;
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            return await response.Content.ReadFromJsonAsync<UserToken>(options);
+
+        }
+        catch (JsonException)
+        {
+
+            return null;
+        }
+
+        
     }
 
 
