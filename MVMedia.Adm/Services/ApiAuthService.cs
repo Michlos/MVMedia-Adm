@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace MVMedia.Adm.Services;
 
@@ -42,6 +43,8 @@ public class ApiAuthService
 
 public class UserToken
 {
+    [JsonPropertyName("token")]
     public string? Token { get; set; }
+    [JsonPropertyName("isAdmin")]
     public bool IsAdmin { get; set; }
 }
