@@ -45,7 +45,7 @@ public class AccountController : Controller
             Secure = true,
             SameSite = SameSiteMode.Strict
         });
-        Response.Cookies.Append("IsAdmin", token.IsAdmin.ToString().ToLower());
+        Response.Cookies.Append("IsAdmin", userData.IsAdmin.ToString().ToLower());
         //Response.Cookies.Append("IsAdmin", model.IsAdmin.ToString().ToLower(), new CookieOptions
         //{
         //    HttpOnly = false, //Deixe false para que o layout conseiga ler se necessário
