@@ -30,7 +30,7 @@ public class AccountController : Controller
         // Chama o serviço que faz a requisição para a API
         var userData = await _apiAuthService.LoginAsync(model.Username, model.Password);
 
-        if (string.IsNullOrEmpty(userData.Token))
+        if (string.IsNullOrEmpty(userData.Token) || userData == null)
         {
             ModelState.AddModelError("", "Usuário ou senha inválidos.");
             return View(model);
@@ -45,7 +45,12 @@ public class AccountController : Controller
             Secure = true,
             SameSite = SameSiteMode.Strict
         });
-        Response.Cookies.Append("IsAdmin", model.IsAdmin.ToString().ToLower());
+        //Response.Cookies.Append("IsAdmin", model.IsAdmin.ToString().ToLower());
+        Response.Cookies.Append("IsAdmin", model.IsAdmin.ToString().ToLower(), new CookieOptions
+        {
+            HttpOnly = false, //Deixe false para que o layout conseiga ler se necessário
+            Expires = DateTimeOffset.Now.AddHours(8)
+        });
         Response.Cookies.Append("Username", model.Username);
 
         return RedirectToAction("Index", "Home");

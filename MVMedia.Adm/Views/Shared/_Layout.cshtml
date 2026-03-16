@@ -29,7 +29,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
                             </li>
                             @*Verifica o cooke isadmin*@
-                            @if (Context.Request.Cookies["IsAdmin"] == "true")
+                            @if (Context.Request.Cookies["IsAdmin"]?.ToLower() == "true")
                             {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Index">Company</a>
