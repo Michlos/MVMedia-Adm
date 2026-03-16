@@ -51,7 +51,7 @@
                         {
                             <li class="nav-item">
                                 @*IMPRIMIR O NOME DO USUÁRIO E SE ELE É ADMIM*@
-                                <span class="nav-link text-dark">@Context.Request.Cookies["Username"] (@(Context.Request.Cookies["IsAdmin"] == "true" ? "Admin" : "User"))</span>
+                                <span class="d-inline">@Context.Request.Cookies["Username"]</span>
                             </li>
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
