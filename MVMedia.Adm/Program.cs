@@ -10,10 +10,16 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<BearerTokenHandler>();
 
+////HOMOLOGAÇÃO API LOCALHOST
+string? APIAddress = "ServiceUri:MVMediaAPI";
+
+//////PRODUÇÃO API RAILWAY
+//string? APIAddress = "ServiceUri:MVMediA";
+
 //REGISTER HTTP CLIENT SERVICE WITH API BASE URL
-builder.Services.AddHttpClient("MVMediaAPI", a =>
+builder.Services.AddHttpClient(APIAddress, a =>
 {
-    a.BaseAddress = new Uri(builder.Configuration["ServiceUri:MVMediaAPI"]);
+    a.BaseAddress = new Uri(builder.Configuration[APIAddress]);
 })
 .AddHttpMessageHandler<BearerTokenHandler>();
 
