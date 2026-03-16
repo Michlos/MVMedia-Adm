@@ -43,7 +43,7 @@ public class AccountController : Controller
             Secure = true,
             SameSite = SameSiteMode.Strict
         });
-        //Response.Cookies.Append("IsAdmin", userData.IsAdmin.ToString().ToLower());
+        Response.Cookies.Append("IsAdmin", model.IsAdmin.ToString().ToLower());
         Response.Cookies.Append("Username", model.Username);
 
         return RedirectToAction("Index", "Home");

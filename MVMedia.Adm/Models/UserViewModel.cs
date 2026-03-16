@@ -14,8 +14,8 @@ public class UserViewModel
     public required string Password { get; set; }
 
     //public string Email { get; private set; }
-    //public bool IsActive { get; set; }
-    //public bool IsAdmin { get; set; }
+    public bool IsActive { get; set; }
+    public bool IsAdmin { get; set; }
     //[JsonIgnore]
     //public string? Token { get; set; }
 }
