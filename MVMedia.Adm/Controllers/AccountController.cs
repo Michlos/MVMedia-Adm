@@ -36,6 +36,8 @@ public class AccountController : Controller
             return View(model);
         }
 
+        
+
         // Salva o token em cookie seguro
         Response.Cookies.Append("AuthToken", userData.Token, new CookieOptions
         {
