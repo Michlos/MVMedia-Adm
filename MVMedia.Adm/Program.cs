@@ -19,7 +19,7 @@ string? APIAddress = "MVMediaAPI";
 //REGISTER HTTP CLIENT SERVICE WITH API BASE URL
 builder.Services.AddHttpClient(APIAddress, a =>
 {
-    a.BaseAddress = new Uri(builder.Configuration[$"ServiceURI:{APIAddress}"]);
+    a.BaseAddress = new Uri(builder.Configuration[$"ServiceUri:{APIAddress}"]);
 })
 .AddHttpMessageHandler<BearerTokenHandler>();
 
