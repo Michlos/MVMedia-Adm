@@ -30,7 +30,7 @@ public class AccountController : Controller
         // Chama o serviço que faz a requisição para a API
         var userData = await _apiAuthService.LoginAsync(model.Username, model.Password);
 
-        if (string.IsNullOrEmpty(userData.Token) || userData == null)
+        if (userData == null)
         {
             ModelState.AddModelError("", "Usuário ou senha inválidos.");
             return View(model);
