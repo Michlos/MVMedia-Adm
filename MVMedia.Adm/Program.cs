@@ -12,7 +12,7 @@ builder.Services.AddTransient<BearerTokenHandler>();
 
 ////HOMOLOGAÇÃO API LOCALHOST
 string? APIAddress = "ServiceUri";
-var apiBaseUrl = builder.Configuration["ServiceUri:MVMediaApi"];
+var apiBaseUrl = builder.Configuration["ServiceUri:MVMediaAPI"];
 
 if(string.IsNullOrEmpty(apiBaseUrl))
 {
