@@ -103,7 +103,7 @@ public class MediaFileService : IMediaFileService
 
     public async Task<bool> DeleteMediaFile(Guid id)
     {
-        var client = _clientFactory.CreateClient("MvMediaAPI");
+        var client = _clientFactory.CreateClient("MVMediaAPI");
         var response = await client.GetAsync(apiEndpoint + $"DeleteMediaFile/{id}");
 
         if (response.IsSuccessStatusCode)
