@@ -62,21 +62,21 @@ public class MediaFileController : Controller
     }
 
     //[HttpGet]
-    //public async Task<ActionResult<MediaFileViewModel>> UpdateMediaFile([FromBody] MediaFileViewModel mediaFile)
+    //public async Task<ActionResult<MediaFileViewModel>> UpdateMediaFile(int Id)
     //{
     //    var result = await _mediaFileService.UpdateMediaFile(mediaFile, mediaFile.FileName);
-    //    if(result is null)
+    //    if (result is null)
     //        return View("Error", new string[] { "Something went wrong while processing your request" });
     //    return View(result);
     //}
 
     //[HttpPost]
-    //public async Task<ActionResult> UpdateMediaFile(MediaFileViewModel mediaFileVM)
+    //public async Task<ActionResult> UpdateMediaFile([FromBody] MediaFileViewModel mediaFileVM)
     //{
     //    if (ModelState.IsValid)
     //    {
     //        var result = await _mediaFileService.UpdateMediaFile(mediaFileVM, mediaFileVM.FileName);
-    //        if(result is not null)
+    //        if (result is not null)
     //            return RedirectToAction(nameof(Index));
     //        else
     //            return View("Error", new string[] { "Something went wrong while processing your request" });
@@ -94,6 +94,16 @@ public class MediaFileController : Controller
         if (result == null || result.MediaFiles == null || !result.MediaFiles.Any())
             return View("Error", new string[] { "Something went wrong while processing your request" });
         return View("Index", result.MediaFiles);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<MediaFileViewModel>> GetMediaById(Guid id)
+    {
+        var result = await _mediaFileService.GetMediaFileById(id);
+        // Corrigido: Verifica se result é nulo ou se a lista de mídias está vazia
+        if (result == null)
+            return View("Error", new string[] { "Something went wrong while processing your request" });
+        return View(result);
     }
 
     [HttpGet]

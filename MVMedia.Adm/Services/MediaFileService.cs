@@ -36,7 +36,7 @@ public class MediaFileService : IMediaFileService
     public async Task<IEnumerable<string>> GetAllMediaFileURI()
     {
         var client = _clientFactory.CreateClient("MVMediaAPI");
-        var response = await client.GetAsync(apiEndpoint + "LIstMediaUris");
+        var response = await client.GetAsync(apiEndpoint + "ListMediaUris");
         IEnumerable<string> uriList = null;
         if (response.IsSuccessStatusCode)
         {
@@ -128,13 +128,8 @@ public class MediaFileService : IMediaFileService
             var result = JsonSerializer.Deserialize<MediaFileViewModel>(apiResponse, _options);
             return result;
         }
-        else
-        {
-            //TODO: VERIFICAR SE ESTÁ NO BANCO E REMOVER DO BANCO
 
-            var error = await response.Content.ReadAsStringAsync();
-            throw new ApplicationException($"Erro ao buscar arquivo de mídia: {error}");
-        }
+        return null;
     }
 
     public async Task<MediaFileViewModel> UpdateMediaFile(MediaFileViewModel mediaFile, string oldFileName)
