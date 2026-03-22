@@ -107,13 +107,18 @@ public class MediaFileController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult<MediaFileViewModel>> DeleteMediaFile(Guid id)
+    public async Task<ActionResult> DeleteMediaFile(Guid id)
     {
-        var mediaFileId = await _mediaFileService.GetMediaFileById(id);
+        var mediaFile = await _mediaFileService.GetMediaFileById(id);
+
+        if (mediaFile == null) return NotFound();
+
         var result = await _mediaFileService.DeleteMediaFile(id);
+        
         if (!result)
             return View("Error", new string[] { "Something went wrong while processing your request" });
-        return RedirectToAction("ClientDetail", "Clients", new {id = mediaFileId});
+       
+        return RedirectToAction("ClientDetail", "Clients", new {id = mediaFile.ClientId});
     }
 
 

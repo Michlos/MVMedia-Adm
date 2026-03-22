@@ -104,17 +104,20 @@ public class MediaFileService : IMediaFileService
     public async Task<bool> DeleteMediaFile(Guid id)
     {
         var client = _clientFactory.CreateClient("MVMediaAPI");
-        var response = await client.GetAsync(apiEndpoint + $"DeleteMediaFile/{id}");
+
+        //TODO RESPONSE COM 405 Method Not Allowed
+        var response = await client.DeleteAsync(apiEndpoint + $"DeleteMediaFile/{id}");
 
         if (response.IsSuccessStatusCode)
         {
             return true;
         }
-        else
-        {
-            var error = await response.Content.ReadAsStringAsync();
-            throw new ApplicationException($"Erro ao deletar arquivo de mídia: {error}");
-        }
+        
+        var error = await response.Content.ReadAsStringAsync();
+        
+        
+        throw new ApplicationException($"Erro ao deletar arquivo de mídia: {error}");
+        
     }
 
     public async Task<MediaFileViewModel> GetMediaFileById(Guid id)
