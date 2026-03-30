@@ -20,3 +20,20 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+/*Sidebar nav pills command cara defs exemplo bdo Bootstrap*/
+aside .nav-link {
+    border-radius: .375rem; /*padrão bs*/
+    padding: .6rem .8rem;
+    color: #000; /*cor do link*/
+}
+
+aside .nav-link:hover {
+    background-color: rgba(13,110,253,.08); /*cor de fundo ao passar o mouse*/
+}
+
+aside .navlink.active {
+    background-color: #0d6efd; /*cor de fundo do link ativo*/
+    color: #fff; /*cor do texto do link ativo*/
+}

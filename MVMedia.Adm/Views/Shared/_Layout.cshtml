@@ -3,77 +3,146 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MVMedia.Adm</title>
+    <title>@ViewData["Title"] - MVMedia</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MVMedia.Adm.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/font-awesome/css/all.min.css" />
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MVMedia.Adm</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        @if (Context.Request.Cookies["AuthToken"] != null)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
-                            </li>
-                            @*Verifica o cooke isadmin*@
-                            @if (Context.Request.Cookies["IsAdmin"]?.ToLower() == "true")
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Index">Company</a>
-                                </li>
-                            }
-                            @* <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Medias" asp-action="Index">Medias</a>
-                            </li> *@
-                        }
-                    </ul>
-                    <ul class="navbar-nav ms-auto">
-                        @if (Context.Request.Cookies["AuthToken"] == null)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
-                                    <button type="submit" class="btn btn-link nav-link" style="display:inline; padding:0;">Logout - @Context.Request.Cookies["Username"]</button>
-                                </form>
-                            </li>
-                        }
-                    </ul>
+    @{
+        var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+        var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+
+        string IsActive(string controller, string action = "Index")
+        => (string.Equals(currentController, controller, StringComparison.OrdinalIgnoreCase)
+        && string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase))
+        ? "active"
+        : "";
+    }
+    @* <header> *@
+
+    <!-- TOPBAR-->
+    <nav class="navbar navbar-light bg-light px-2" style="padding-left: 10px">
+        <div class="d-flex align-itens-center w-100">
+
+            <!--ESQUERDA: BRAND-->
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/icon.svg" width="30" height="30" class="d-inline-block align-top" alt="" />
+                MVMedia
+            </a>
+
+            <!--MEIO: BOTÃO DE MENU (SÓ NO MOBILE)-->
+            @if (Context.Request.Cookies["AuthToken"] != null)
+            {
+                <div class="flex-grow-1 d-flex justify-content-center">
+                    <button class="btn btn-outline-primary d-md-none"
+                            type="button"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasMenu"
+                            aria-controls="offcanvasMenu">
+                        ☰ Menu
+                    </button>
                 </div>
+            }
+            else
+            {
+                <div classe="flex-grow-1"></div>
+            }
+
+            <!--DIREITA: LOGIN/LOGOUT-->
+            <div class="ms-auto">
+                @if (Context.Request.Cookies["AuthToken"] == null)
+                {
+                    <a class="nav-link text-black" asp-controller="Account" asp-action="Login">Login</a>
+                }
+                else
+                {
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-link text-black nav-link">@Context.Request.Cookies["Username"] - Logout</button>
+                    </form>
+                }
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+        </div>
+    </nav>
+    <!--FIM TOPBAR-->
+    <!--OFFCANVAS MENU (Só mobile)-->
+    @if (Context.Request.Cookies["AuthToken"] != null)
+    {
+        <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasMenuLabel">Menu</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body p-2">
+                <nav class="nav nav-pills flex-column gap-1">
+                    <a class="nav-link @IsActive("Clients")" asp-area="" asp-controller="Clients" asp-action="Index">
+                        Clients
+                    </a>
+                    @if (Context.Request.Cookies["IsAdmin"]?.ToLower() == "true")
+                    {
+                        <a class="nav-link @IsActive("Company") offcanvas-link"
+                           asp-area="" asp-controller="Company" asp-action="Index">
+                            Company
+                        </a>
+                    }
+                </nav>
+            </div>
+        </div>
+    }
+
+    @if (Context.Request.Cookies["AuthToken"] != null)
+    {
+        <!--OFFCANVAS MENU (SÓ MOBILE)-->
+        <div class="container-fluid">
+            <div class="row">
+
+                <!--SIDEBAR-->
+                <aside class="d-none d-md-block col-md-3 col-lg-2 border-end min-vh-100 py-3">
+                    <nav class="nav nav-pills flex-column gap-1">
+                        <a class="nav-link @IsActive("Clients")"
+                           asp-area="" asp-controller="Clients" asp-action="Index">
+                            Clients
+                        </a>
+                        @*Verifica o cooke isadmin*@
+                        @if (Context.Request.Cookies["IsAdmin"]?.ToLower() == "true")
+                        {
+                            <a class="nav-link @IsActive("Company")"
+                               asp-area="" asp-controller="Company" asp-action="Index">
+                                Company
+                            </a>
+                        }
+                    </nav>
+                </aside>
+
+                <!--MAIN CONTENT IF LOGGED-->
+                <main class="col-12 col-md-9 col-lg-10 py-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+    }
+    else
+    {
+        <main class="container py-3">
             @RenderBody()
         </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - MVMedia.Adm - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+        <footer class="border-top footer text-muted">
+            <div class="container-fluid text-start ps-3">
+                &copy; 2025 - MVMedia - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        @await RenderSectionAsync("Scripts", required: false)
+    }
+
+
+    @* </header> *@
+
+
 </body>
 </html>
