@@ -17,18 +17,19 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public IActionResult Login()
+    public async Task<IActionResult> Login()
     {
+        await HttpContext.SignOutAsync(); // Limpa qualquer sessão anterior
+        Response.Cookies.Delete("AuthToken"); // Remove o cookie de autenticação anterior, se existir
+        Response.Cookies.Delete("IsAdmin"); // Remove o cookie de autenticação anterior, se existir
+        Response.Cookies.Delete("Username"); // Remove o cookie de autenticação anterior, se existir
         return View();
     }
 
     [HttpPost]
     public async Task<IActionResult> Login(UserViewModel model, UserToken? token)
     {
-        await HttpContext.SignOutAsync(); // Limpa qualquer sessão anterior
-        Response.Cookies.Delete("AuthToken"); // Remove o cookie de autenticação anterior, se existir
-        Response.Cookies.Delete("IsAdmin"); // Remove o cookie de autenticação anterior, se existir
-        Response.Cookies.Delete("Username"); // Remove o cookie de autenticação anterior, se existir
+        
 
         if (!ModelState.IsValid)
             return View(model);
@@ -65,8 +66,10 @@ public class AccountController : Controller
     [HttpPost]
     public IActionResult Logout()
     {
-        // Remove o token da sessão
-        Response.Cookies.Delete("AuthToken");
+        HttpContext.SignOutAsync(); // Limpa qualquer sessão anterior
+        Response.Cookies.Delete("AuthToken"); // Remove o cookie de autenticação anterior, se existir
+        Response.Cookies.Delete("IsAdmin"); // Remove o cookie de autenticação anterior, se existir
+        Response.Cookies.Delete("Username");
         // Redireciona para a página de login
         return RedirectToAction("Index", "Home");
     }
