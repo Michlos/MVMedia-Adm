@@ -23,10 +23,6 @@ public class ClientsController : Controller
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ClientViewModel>>> Index()
     {
-        if (!User.Identity.IsAuthenticated)
-        {
-            return RedirectToAction("Login", "Account");
-        }
 
         var result = await _clientService.GetAllClients();
 
