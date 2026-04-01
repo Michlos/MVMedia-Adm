@@ -26,6 +26,9 @@ public class AccountController : Controller
     public async Task<IActionResult> Login(UserViewModel model, UserToken? token)
     {
         await HttpContext.SignOutAsync(); // Limpa qualquer sessão anterior
+        Response.Cookies.Delete("AuthToken"); // Remove o cookie de autenticação anterior, se existir
+        Response.Cookies.Delete("IsAdmin"); // Remove o cookie de autenticação anterior, se existir
+        Response.Cookies.Delete("Username"); // Remove o cookie de autenticação anterior, se existir
 
         if (!ModelState.IsValid)
             return View(model);
