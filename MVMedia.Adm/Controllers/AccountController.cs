@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using MVMedia.Adm.Models;
 using MVMedia.Adm.Services;
 
@@ -24,6 +25,8 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(UserViewModel model, UserToken? token)
     {
+        await HttpContext.SignOutAsync(); // Limpa qualquer sessão anterior
+
         if (!ModelState.IsValid)
             return View(model);
 
