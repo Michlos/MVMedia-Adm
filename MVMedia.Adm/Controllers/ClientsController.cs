@@ -7,7 +7,7 @@ using MVMedia.Adm.Services.Interfaces;
 
 namespace MVMedia.Adm.Controllers;
 
-[Authorize]
+
 
 public class ClientsController : Controller
 {
