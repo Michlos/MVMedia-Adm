@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Components.Rendering;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using MVMedia.Adm.DTOs;
 using MVMedia.Adm.Models;
 using MVMedia.Adm.Services.Interfaces;
 
 namespace MVMedia.Adm.Controllers;
+
+[Authorize]
 
 public class ClientsController : Controller
 {
