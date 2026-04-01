@@ -17,12 +17,21 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> Login()
+    public IActionResult Login()
     {
-        await HttpContext.SignOutAsync(); // Limpa qualquer sessão anterior
+        
         Response.Cookies.Delete("AuthToken"); // Remove o cookie de autenticação anterior, se existir
         Response.Cookies.Delete("IsAdmin"); // Remove o cookie de autenticação anterior, se existir
         Response.Cookies.Delete("Username"); // Remove o cookie de autenticação anterior, se existir
+
+        try
+        {
+            HttpContext.Session.Clear(); // Limpa a sessão atual
+        }
+        catch
+        {
+
+        }
         return View();
     }
 
